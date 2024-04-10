@@ -1,28 +1,25 @@
 // const fs = require('fs/promises')
-
 const fs = require("fs/promises");
 const path = require("node:path");
 const { v4: uuidv4 } = require("uuid");
 const contactsPath = path.resolve("models", "contacts.json");
 const { validateContact } = require("./validator");
 
-const listContacts = async (req, res, next) => {
-  try {
-    const result = await fs.readFile(contactsPath);
-    const parsedResult = JSON.parse(result);
-    res.json({
-      status: "success",
-      code: 200,
-      message: "Contacts successfully found",
-      data: {
-        contacts: parsedResult,
-      },
-    });
-  } catch (err) {
-    console.log(err.message);
-    next(err);
-  }
-};
+const listContacts = async (req, res, next) => { try {
+  const result = await fs.readFile(contactsPath);
+  const parsedResult = JSON.parse(result);
+  res.json({
+    status: "success",
+    code: 200,
+    message: "Contacts successfully found",
+    data: {
+      contacts: parsedResult,
+    },
+  });
+} catch (err) {
+  console.log(err.message);
+  next(err);  
+}};
 
 const getContactById = async (req, res, next) => {
   const { contactId } = req.params;
@@ -49,7 +46,7 @@ const getContactById = async (req, res, next) => {
   } catch (err) {
     console.log(err.message);
     next(err);
-  }
+  } 
 };
 
 const removeContact = async (req, res, next) => {
@@ -81,7 +78,7 @@ const removeContact = async (req, res, next) => {
     console.log(err.message);
     next(err);
   }
-};
+};  
 
 const addContact = async (req, res, next) => {
   const { error, value } = validateContact(req.body);
@@ -153,6 +150,7 @@ const updateContact = async (req, res, next) => {
     next(err);
   }
 };
+
 
 module.exports = {
   listContacts,
