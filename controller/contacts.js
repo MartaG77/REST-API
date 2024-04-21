@@ -1,4 +1,3 @@
-
 const service = require("../service/index");
 const { validateContact } = require("../validator/validator");
 
@@ -129,16 +128,16 @@ const updateContact = async (req, res, next) => {
 
 const updateContactStatus = async (req, res, next) => {
   const { contactId } = req.params;
-  const { favourite } = req.body;
-  if (favourite === undefined) {
+  const { favorite } = req.body;
+  if (favorite === undefined) {
     return res.status(400).json({
       status: "error",
       code: 400,
-      message: "Missing field favourite",
+      message: "Missing field favorite",
     });
   }
   try {
-    const result = await service.updateContact(contactId, { favourite });
+    const result = await service.updateContact(contactId, { favorite });
     if (result) {
       res.json({
         status: "success",

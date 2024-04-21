@@ -19,7 +19,7 @@ const contact = new Schema(
       minLength: 5,
       required: [true, "Set phone number for contact"],
     },
-    favourite: {
+    favorite: {
       type: Boolean,
       default: false,
     },
