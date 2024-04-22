@@ -1,8 +1,8 @@
-const service = require("../service/index");
-const { validateContact } = require("../validator/validator");
+const service = require("../service/contactsService");
+const { validateContact } = require("../validator/contactValidator");
 
 const getContacts = async (req, res, next) => { try {
-  const result = await service.getAllContacts();
+  const result = await service.getContacts(req.query);
   res.json({
     status: "success",
     code: 200,
