@@ -21,6 +21,8 @@ app.use(passport.initialize());
 const contactsRouter = require("./routes/api/contacts");
 const usersRouter = require("./routes/api/users");
 
+app.use(express.static("public"));
+
 app.use(contactsRouter);
 app.use(usersRouter);
 
@@ -46,8 +48,6 @@ const startServer = async () => {
   try {
     await uploadFunctions.initUploadFolders();
     await mongoose.connect(uriDb, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       dbName: "db-contacts",
     });
     app.listen(3000, () => {
