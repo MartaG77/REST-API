@@ -42,6 +42,7 @@ const registerUser = async (req, res, next) => {
 
 const loginUser = async (req, res, next) => {
   const { error, value } = validateUser(req.body);
+
   const { email, password } = value;
   if (error) {
     res.status(400).json({
@@ -52,8 +53,7 @@ const loginUser = async (req, res, next) => {
   }
   try {
     const user = await service.loginUser(email, password);
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!user || !isMatch) {
+    if (!user) {
       res.status(401).json({
         status: "failure",
         code: 401,
@@ -75,7 +75,7 @@ const loginUser = async (req, res, next) => {
       },
     });
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
     next(err);
   }
 };
@@ -87,7 +87,6 @@ const logoutUser = async (req, res, mext) => {
     res.status(204).send();
   } catch (err) {
     console.log(err.message);
-    
   }
 };
 
@@ -152,7 +151,7 @@ const updateUserAvatar = async (req, res, next) => {
       return res.status(400).json({ message: "No file uploaded!" });
     }
     const newFilePath = await uploadFunctions.processAndValidateImage(
-      file.path
+      file.path,
     );
     if (!newFilePath) {
       return res.status(500).json({ message: "Error processing file" });
