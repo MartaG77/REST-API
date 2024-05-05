@@ -1,10 +1,10 @@
 const Contact = require("./schemas/contacts");
 
-const getContacts = async ({ page = 1, limit = 20, favourite }) => {
+const getContacts = async ({ page = 1, limit = 20, favorite }) => {
   const options = {};
 
-  if (favourite !== undefined) {
-    options.favourite = favourite;
+  if (favorite !== undefined) {
+    options.favorite = favorite;
   }
 
   const skip = (parseInt(page) - 1) * parseInt(limit);
