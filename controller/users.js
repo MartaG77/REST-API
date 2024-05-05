@@ -8,7 +8,7 @@ const uploadFunctions = require("../config/config-multer");
 
 const registerUser = async (req, res, next) => {
   const { error, value } = validateUser(req.body);
-  const { email } = value;
+  const { email, password } = value;
   if (error) {
     res.status(400).json({
       status: "failure",
@@ -26,7 +26,7 @@ const registerUser = async (req, res, next) => {
       });
     } else {
       try {
-        // const result = await service.registerUser({ email, password });
+        const result = await service.registerUser({ email, password });
         res.status(201).json({
           status: "success",
           code: 201,
@@ -45,7 +45,7 @@ const loginUser = async (req, res, next) => {
 
   const { email, password } = value;
   if (error) {
-    res.status(400).json({
+    return res.status(400).json({
       status: "failure",
       code: 400,
       error: error.details,
@@ -54,18 +54,19 @@ const loginUser = async (req, res, next) => {
   try {
     const user = await service.loginUser(email, password);
     if (!user) {
-      res.status(401).json({
+      return res.status(401).json({
         status: "failure",
         code: 401,
         message: "Email or password is wrong",
       });
     }
+    console.log(user);
     const token = jwt.sign({ id: user._id }, process.env.SECRET, {
       expiresIn: "1h",
     });
     await service.updateToken(user._id, token);
 
-    res.json({
+    return res.json({
       status: "success",
       code: 200,
       message: "User successfully logged in",
