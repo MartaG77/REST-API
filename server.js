@@ -46,8 +46,6 @@ const startServer = async () => {
   try {
     await uploadFunctions.initUploadFolders();
     await mongoose.connect(uriDb, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       dbName: "db-contacts",
     });
     app.listen(3000, () => {
