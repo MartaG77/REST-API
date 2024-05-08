@@ -169,6 +169,36 @@ const updateUserAvatar = async (req, res, next) => {
   }
 };
 
+const verifyUser = async (req, res) => {
+  const verifiedUser = await service.verifyUser(req.params.verificationToken);
+  if (!verifiedUser) {
+    return res.status(404).send({ message: "User not found" });
+  }
+  res.status(200).send({ message: "Verification successful" });
+};
+
+const resendVerificationEmail = async (req, res) => {
+  const { error, value } = validateUser(req.body);
+  const { email } = value;
+  if (error) {
+    res.status(400).json({
+      status: "failure",
+      code: 400,
+      error: error.details,
+    });
+  }
+  if (!email) {
+    return res.status(400).send({ message: "Missing required field email" });
+  }
+  const user = await service.resendVerificationEmail(email);
+  if (!user) {
+    return res.status(400).send({
+      message: "Verification has already been passed or user not found",
+    });
+  }
+  res.status(200).send({ message: "Verification email sent" });
+};
+
 module.exports = {
   registerUser,
   loginUser,
@@ -176,4 +206,6 @@ module.exports = {
   checkCurrentUser,
   updateUserSubscription,
   updateUserAvatar,
+  verifyUser,
+  resendVerificationEmail,
 };
